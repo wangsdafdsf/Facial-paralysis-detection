@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧医疗AI问答页面</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script src="{{ url_for('static', filename='js/index.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/Camera.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/conversations.js') }}" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="camera-container">
+            <div id="permission-section">
+                <p>需要访问您的摄像头来提供视频功能。</p>
+                <button id="request-camera">请求摄像头权限</button>
+            </div>
+            <div id="video-container" style="display: none;">
+                <div class="overlay" id="permission-overlay">
+                    <p>正在等待您授予摄像头访问权限...</p>
+                </div>
+                <video id="videoElement" autoplay playsinline></video>
+                <button id="capture-btn" style="margin-top:10px;">拍摄照片</button>
+                <div id="result" style="margin-top:10px; font-weight:bold;"></div>
+                <div class="vit-result" id="vitResult">
+                    <h3>模型检测结果</h3>
+                    <p id="diagnosis"></p>
+                    <p id="confidence"></p>
+                </div>
+                 <div class="deepseek-report" id="deepseekReport" style="margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 8px; display: none;">
+                    <h3>专业检测报告</h3>
+                    <div id="reportContent" style="line-height: 1.6;"></div>
+                 </div>
+                <img id="captured-image" style="margin-top:10px; max-width:100%; display:none;" />
+            </div>
+            <div id="error-section" style="display: none; color: red;">
+                <p id="error-message">无法访问摄像头</p>
+            </div>
+        </div>
+       {% block main_content %}{% endblock %}
+    </div>
+
+    <!-- 固定在底部的输入框 -->
+    <div class="fixed-input-panel">
+        <div class="input-panel-inner">
+           <form action="{{ url_for('User.current_conversations') }}" method="post">
+                <input type="text" name='message' placeholder="请输入您的问题...">
+                <div class="input-options">
+                    <button>深度搜索</button>
+                    <button>思考</button>
+                    <button>编辑图片</button>
+                    <div class="post-button">
+                        <button>提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
